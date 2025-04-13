@@ -282,7 +282,7 @@ class _MainPageState extends State<MainPage> {
       bmi = mass / (heightInM * heightInM);
 
       if (bmi < 18.5) {
-        commentColor = kUnderWeight;
+        commentColor = const Color.fromARGB(255, 197, 180, 30);
         comment = "Under Weight";
       } else if (bmi < 24.9) {
         commentColor = kNormalWeight;
