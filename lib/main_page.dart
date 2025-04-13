@@ -86,7 +86,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 50.0),
+                      padding: const EdgeInsets.only(left: 45.0),
                       child: Column(
                         //Height
                         children: [
@@ -147,7 +147,7 @@ class _MainPageState extends State<MainPage> {
                   children: [
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 135.0, top: 50),
+                        padding: EdgeInsets.only(left: 45.0, top: 50),
                         child: Column(
                           children: [
                             Padding(
@@ -159,18 +159,57 @@ class _MainPageState extends State<MainPage> {
                               ),
                             ),
                             Text(
-                              bmi.toString(),
+                              bmi.toStringAsFixed(1),
                               style: TextStyle(
                                   fontSize: 50,
                                   fontWeight: FontWeight.bold,
                                   color: kNumberColor1),
                             ),
-                            Text(
-                              comment,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: kNumberColor1),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 30.0),
+                              child: Text(
+                                comment,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: commentColor),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                //reset
+                                SizedBox(
+                                  width: 120,
+                                  child: FloatingActionButton(
+                                    onPressed: reset,
+                                    backgroundColor: Colors.blue,
+                                    child: Text(
+                                      "Reset",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 50,
+                                ),
+                                SizedBox(
+                                  width: 120,
+                                  child: FloatingActionButton(
+                                    onPressed: cal,
+                                    backgroundColor: Colors.blue,
+                                    child: Text(
+                                      "Calculate",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             )
                           ],
                         ),
@@ -188,32 +227,41 @@ class _MainPageState extends State<MainPage> {
   double mass = 65;
   double bmi = 0;
   String comment = "";
+  Color commentColor = Colors.white;
 
   void onHeightMinus() {
     print("H minus");
     setState(() {
-      height--;
+      if (1 < height) {
+        height--;
+      }
     });
   }
 
   void onHeightPlus() {
     print("H plus");
     setState(() {
-      height--;
+      if (height < 250) {
+        height++;
+      }
     });
   }
 
   void onMassMinus() {
     print("M minus");
     setState(() {
-      mass--;
+      if (1 < mass) {
+        mass--;
+      }
     });
   }
 
   void onMassPlus() {
     print("M plus");
     setState(() {
-      mass++;
+      if (mass < 200) {
+        mass++;
+      }
     });
   }
 
@@ -222,8 +270,30 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       height = 176;
       mass = 65;
+      bmi = 21;
+      commentColor = Colors.white;
     });
   }
 
-  void cal() {}
+  void cal() {
+    print("calculating");
+    setState(() {
+      double heightInM = height / 100;
+      bmi = mass / (heightInM * heightInM);
+
+      if (bmi < 18.5) {
+        commentColor = kUnderWeight;
+        comment = "Under Weight";
+      } else if (bmi < 24.9) {
+        commentColor = kNormalWeight;
+        comment = "Normal Weight";
+      } else if (bmi < 29.9) {
+        commentColor = kOverWeight;
+        comment = "Over Weight";
+      } else {
+        commentColor = kObeseWeight;
+        comment = "Obese";
+      }
+    });
+  }
 }
